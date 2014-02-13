@@ -1,0 +1,7 @@
+/*!
+ * \defgroup block GNU Radio CSVFILE C++ Signal Processing Blocks
+ * \brief All C++ blocks that can be used from the CSVFILE GNU Radio
+ *        module are listed here or in the subcategories below.
+ *
+ */
+
