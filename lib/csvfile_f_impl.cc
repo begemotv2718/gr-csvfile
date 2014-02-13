@@ -30,10 +30,10 @@ namespace gr {
   namespace csvfile {
 
     csvfile_f::sptr
-    csvfile_f::make(const char *filename, bool repeat, bool skipheader, int n_chans)
+    csvfile_f::make(const char *filename, bool repeat, bool skipheader, int nchans)
     {
       return gnuradio::get_initial_sptr
-        (new csvfile_f_impl(filename,repeat));
+        (new csvfile_f_impl(filename,repeat,skipheader,nchans));
     }
 
     /*
@@ -42,17 +42,17 @@ namespace gr {
     csvfile_f_impl::csvfile_f_impl(const char *filename, bool repeat, bool skipheader, int nchans)
       : gr::sync_block("csvfile_f",
               gr::io_signature::make(0, 0, 0),
-              gr::io_signature::make(1, n_chans, sizeof(float))),
-      d_fp(NULL),d_repeat(repeat),d_skipheader(skipheader),d_nchans(nchans)
+              gr::io_signature::make(1, nchans, sizeof(float))),
+      d_repeat(repeat),d_skipheader(skipheader),d_nchans(nchans)
     {
-      d_fp=std::ifstream(filename);
+      d_fp.open(filename);
       if(!d_fp.is_open()){
         perror(filename);
         throw std::runtime_error("can't open file");
       }
 
       if(d_skipheader){
-        std::getline(d_fp,NULL);
+        //std::getline(d_fp,NULL);
       }
 
     }
@@ -80,6 +80,7 @@ namespace gr {
           if(d_fp.eof()){
             if(d_repeat){
               d_fp.seekg(0);
+              if(d_fp.bad()) return -1;
             }else{
               return -1;
             }
@@ -89,11 +90,13 @@ namespace gr {
           std::getline(d_fp,line);
 
           std::string cell;
+          std::stringstream linestream(line);
           int chan = 0;
-          while(std::getline(line,cell,',') && chan < d_nchans){
+          while(std::getline(linestream,cell,',') && chan < d_nchans){
             chan++;
             if(chan< n_out_chans){
-              out[chan][i]=::atof(cell);
+              std::string::size_type sz;
+              out[chan][i]=::atof(cell.c_str());
             }
           }
         }
