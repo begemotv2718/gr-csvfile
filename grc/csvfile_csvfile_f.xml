@@ -2,7 +2,7 @@
 <block>
   <name>csvfile_f</name>
   <key>csvfile_csvfile_f</key>
-  <category>csvfile</category>
+  <category>Misc</category>
   <import>import csvfile</import>
   <make>csvfile.csvfile_f($filename,$repeat,$nchans)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
