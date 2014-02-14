@@ -30,29 +30,25 @@ namespace gr {
   namespace csvfile {
 
     csvfile_f::sptr
-    csvfile_f::make(const char *filename, bool repeat, bool skipheader, int nchans)
+    csvfile_f::make(const char *filename, bool repeat, int nchans)
     {
       return gnuradio::get_initial_sptr
-        (new csvfile_f_impl(filename,repeat,skipheader,nchans));
+        (new csvfile_f_impl(filename,repeat,nchans));
     }
 
     /*
      * The private constructor
      */
-    csvfile_f_impl::csvfile_f_impl(const char *filename, bool repeat, bool skipheader, int nchans)
+    csvfile_f_impl::csvfile_f_impl(const char *filename, bool repeat, int nchans)
       : gr::sync_block("csvfile_f",
               gr::io_signature::make(0, 0, 0),
               gr::io_signature::make(1, nchans, sizeof(float))),
-      d_repeat(repeat),d_skipheader(skipheader),d_nchans(nchans)
+      d_repeat(repeat),d_nchans(nchans)
     {
       d_fp.open(filename);
       if(!d_fp.is_open()){
         perror(filename);
         throw std::runtime_error("can't open file");
-      }
-
-      if(d_skipheader){
-        //std::getline(d_fp,NULL);
       }
 
     }

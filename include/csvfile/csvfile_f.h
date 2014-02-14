@@ -46,7 +46,7 @@ namespace gr {
        * class. csvfile::csvfile_f::make is the public interface for
        * creating new instances.
        */
-      static sptr make(const char *filename, bool repeat, bool skipheader, int nchans);
+      static sptr make(const char *filename, bool repeat, int nchans);
     };
 
   } // namespace csvfile

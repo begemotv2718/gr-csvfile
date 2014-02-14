@@ -33,12 +33,11 @@ namespace gr {
      private:
       std::ifstream d_fp;
       bool d_repeat;
-      bool d_skipheader;
       int d_nchans;
       unsigned int d_sample_rate;
       
      public:
-      csvfile_f_impl(const char *filename, bool repeat, bool skipheader, int nchans);
+      csvfile_f_impl(const char *filename, bool repeat, int nchans);
       ~csvfile_f_impl();
 
       // Where all the action really happens

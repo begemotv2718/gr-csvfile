@@ -38,7 +38,7 @@ class qa_csvfile_f (gr_unittest.TestCase):
     def test_001_t (self):
         # set up fg
         xpected_result = (1.0,1.1,3.0,4.4)
-        csvf = csvfile.csvfile_f(g_in_file,False,False,1)
+        csvf = csvfile.csvfile_f(g_in_file,False,1)
         dst = blocks.vector_sink_f()
         self.tb.connect(csvf,dst)
         #run
@@ -51,7 +51,7 @@ class qa_csvfile_f (gr_unittest.TestCase):
         # set up fg
         xpected_result_0 = (1.0,1.1,3.0,4.4)
         xpected_result_1 = (1.1,1.0,3.3,4.2)
-        csvf = csvfile.csvfile_f(g_in_file,False,False,2)
+        csvf = csvfile.csvfile_f(g_in_file,False,2)
         dst_0 = blocks.vector_sink_f()
         dst_1 = blocks.vector_sink_f()
         self.tb.connect((csvf,0),dst_0)
@@ -70,7 +70,7 @@ class qa_csvfile_f (gr_unittest.TestCase):
         xpected_result_1 = (1.1,1.0,3.3,4.2)
         xpected_result_2 = (2.0,-2.0,3.0,5.0)
         xpected_result_3 = (0.0,0.0,0.0,0.0)
-        csvf = csvfile.csvfile_f(g_in_file,False,False,4)
+        csvf = csvfile.csvfile_f(g_in_file,False,4)
         dst_0 = blocks.vector_sink_f()
         dst_1 = blocks.vector_sink_f()
         dst_2 = blocks.vector_sink_f()
