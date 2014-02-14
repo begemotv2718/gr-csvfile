@@ -73,35 +73,38 @@ namespace gr {
         float **out = (float**) &output_items[0];
         int n_out_chans = output_items.size();
        
-        int i;
+        int i=0;
 
-        for(i=0; i< noutput_items; i++){
-
-          if(d_fp.eof()){
-            if(d_repeat){
-              d_fp.seekg(0);
-              if(d_fp.bad()) return -1;
-            }else{
-              return -1;
-            }
-          }
+        while(i< noutput_items){
 
           std::string line;
-          std::getline(d_fp,line);
-
-          std::string cell;
-          std::stringstream linestream(line);
-          int chan = 0;
-          while(std::getline(linestream,cell,',') && chan < d_nchans){
-            chan++;
-            if(chan< n_out_chans){
-              std::string::size_type sz;
-              out[chan][i]=::atof(cell.c_str());
+          if(!std::getline(d_fp,line)){
+            if(d_repeat){
+              d_fp.seekg(0);
+              if(!std::getline(d_fp,line)) return -1;
+            }else{
+              //std::cerr << "Expected number of output item: " << noutput_items << " actual " << i << std::endl; 
+              return i>0?i:-1;
             }
           }
+          //std::cerr << "Got line: " << line << " i=" << i<< std::endl;
+
+          if(line[0]!= '\0' && line[0] != '#'){
+            std::string cell;
+            std::stringstream linestream(line);
+
+            int chan = 0;
+            while(std::getline(linestream,cell,',') && chan < n_out_chans){
+              out[chan][i]=::atof(cell.c_str());
+              chan++;
+            }
+            while(chan<n_out_chans){
+              out[chan][i]=0.0;
+              chan++;
+            }
+            i++;
+          }
         }
-
-
 
 
         // Tell runtime system how many output items we produced.
