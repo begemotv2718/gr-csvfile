@@ -4,27 +4,41 @@
   <key>csvfile_csvfile_f</key>
   <category>csvfile</category>
   <import>import csvfile</import>
-  <make>csvfile.csvfile_f($filename)</make>
+  <make>csvfile.csvfile_f($filename,$repeat,$nchans)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name
        * key (makes the value accessible as $keyname, e.g. in the make node)
        * type -->
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
+    <name>File name</name>
+    <key>filename</key>
+    <type>file_open</type>
+  </param>
+  <param>
+    <name>Repeat indefinitely</name>
+    <key>repeat</key>
+    <value>False</value>
+    <type>enum</type>
+    <option>
+      <name>Yes</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>No</name>
+      <key>False</key>
+    </option>
   </param>
 
-  <!-- Make one 'sink' node per input. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
-  <sink>
-    <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
-  </sink>
+  <param>
+    <name>N Channels</name>
+    <key>nchans</key>
+    <value>1</value>
+    <type>int</type>
+  </param>
+  <check>1 &lt;= $nchans</check>
+
+
 
   <!-- Make one 'source' node per output. Sub-nodes:
        * name (an identifier for the GUI)
@@ -33,6 +47,7 @@
        * optional (set to 1 for optional inputs) -->
   <source>
     <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>float</type>
+    <nports>$nchans</nports>
   </source>
 </block>
